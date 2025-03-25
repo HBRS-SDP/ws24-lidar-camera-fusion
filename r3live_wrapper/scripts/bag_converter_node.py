@@ -142,7 +142,7 @@ if __name__ == '__main__':
         rospy.init_node('bag_converter_node')
 
         # Specify the output bag path
-        output_bag_path = './output.bag'
+        output_bag_path = '/ros_bags/output.bag'
 
         # Create an instance of the BagConverterNode
         node = BagConverterNode(output_bag_path)

@@ -18,8 +18,8 @@ class ImageFormatConverterNode:
 
         # Desired format (based on /camera/image_color)
         self.desired_encoding = 'rgb8'
-        self.desired_width = 640  # Replace with the actual width of /camera/image_color
-        self.desired_height = 512  # Replace with the actual height of /camera/image_color
+        self.desired_width = 640 
+        self.desired_height = 512 
 
     def image_callback(self, msg):
         try:
