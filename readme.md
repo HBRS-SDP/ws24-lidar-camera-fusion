@@ -89,28 +89,28 @@ The main node, converts and records multiple sensor data streams (images, IMU, p
 * Publishes converted data to new topics
 * Records all converted data to a ROS bag file 
 
-- How to run an example :
-* 1. run the wrapper node :
+## How to run an example :
+* run the wrapper node :
 ```bash 
 rosrun r3live_wrapper bag_converter_node.py
 ```
-* 2. play the recorded bag
+* play the recorded bag
 ```bash
 rosbag play snippet1.bag
 ```
-* 3. the output bag will be saved at the /ros_bags directory, run it
+* the output bag will be saved at the /ros_bags directory, run it
 ```bash
 rosbag play output.bag
 ```
-* 4. launch r3live mapping:
+* launch r3live mapping:
 ```bash
 roslaunch r3live r3live_bag.launch
 ```
-* 5. the output map will be saved in ~/r3live_outputs, to visualize it
+* the output map will be saved in ~/r3live_outputs, to visualize it
 ```bash
 pcl_viewer rgb_pt.pcd
 ```
-* 6. to generate the mesh
+* to generate the mesh
 ```bash
 roslaunch r3live r3live_reconstruct_mesh.launch
 ```
