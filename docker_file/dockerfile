@@ -1,0 +1,61 @@
+# ------------------------------------------------------------
+# BASE IMAGE
+# ------------------------------------------------------------
+FROM osrf/ros:noetic-desktop-full
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# ------------------------------------------------------------
+# COPY REQUIRED FILES
+# ------------------------------------------------------------
+COPY installed_packages.txt /tmp/installed_packages.txt
+COPY python_requirements.txt /tmp/requirements.txt
+
+# ------------------------------------------------------------
+# INSTALL APT DEPENDENCIES
+# ------------------------------------------------------------
+RUN apt-get update && \
+    grep -vE '^\s*#|^\s*$' /tmp/installed_packages.txt | \
+    xargs -r apt-get install -y --no-install-recommends && \
+    apt-get install -y python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+# ------------------------------------------------------------
+# INSTALL PYTHON PACKAGES (IGNORE BROKEN ONES)
+# ------------------------------------------------------------
+RUN cat /tmp/requirements.txt | while read pkg; do \
+      echo "Installing $pkg"; \
+      pip3 install "$pkg" || echo "Skipped $pkg"; \
+    done
+
+# ------------------------------------------------------------
+# SET UP CATKIN WORKSPACE AND CLONE REPOS
+# ------------------------------------------------------------
+RUN mkdir -p /catkin_ws/src
+WORKDIR /catkin_ws/src
+
+RUN git clone https://github.com/hku-mars/r3live.git
+RUN git clone https://github.com/Livox-SDK/livox_ros_driver.git
+
+# ------------------------------------------------------------
+# BUILD THE WORKSPACE
+# ------------------------------------------------------------
+WORKDIR /catkin_ws
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && catkin_make"
+
+# ------------------------------------------------------------
+# COPY THE ROS BAGS (mount the disk is better choice)
+# ------------------------------------------------------------
+RUN mkdir -p /ros_bags
+COPY *.bag /ros_bags
+
+# ------------------------------------------------------------
+# ENTRYPOINT
+# ------------------------------------------------------------
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+WORKDIR /
+
+CMD ["bash"]
+
