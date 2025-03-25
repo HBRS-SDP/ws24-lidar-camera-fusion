@@ -1,6 +1,0 @@
-Repository: livox_ros_driver
-origin	https://github.com/Livox-SDK/livox_ros_driver.git (fetch)
-origin	https://github.com/Livox-SDK/livox_ros_driver.git (push)
-Repository: r3live
-origin	https://github.com/hku-mars/r3live.git (fetch)
-origin	https://github.com/hku-mars/r3live.git (push)
